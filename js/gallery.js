@@ -1,150 +1,284 @@
 
 document.addEventListener("DOMContentLoaded", function () {
+
     const galleryGrid = document.getElementById("galleryGrid");
     const galleryCount = document.getElementById("galleryCount");
+    const galleryFilters = document.getElementById("galleryFilters");
 
     const lightbox = document.getElementById("galleryLightbox");
     const lightboxImage = document.getElementById("lightboxImage");
     const lightboxCaption = document.getElementById("lightboxCaption");
 
     const closeButton = document.getElementById("lightboxClose");
-    const prevButton = document.getElementById("lightboxPrev");
+    const previousButton = document.getElementById("lightboxPrev");
     const nextButton = document.getElementById("lightboxNext");
 
-    const filters = document.querySelectorAll(".gallery-filter");
+    if (!galleryGrid) {
+        console.error("Gallery grid was not found.");
+        return;
+    }
 
-    const totalImages = 90;
-    let currentImage = 1;
-    let activeFilter = "all";
-    const availableImages = [];
+    /* =====================================
+       GALLERY SETTINGS
+       ===================================== */
 
-    // Assign image numbers to categories here.
-    const imageCategories = {
-        products: Array.from({length: 90}, (_, i) => i + 1),
+    const TOTAL_IMAGES = 90;
+
+    /*
+       All images initially belong to Products.
+       Change the numbers below when you know
+       which photos show factory work or projects.
+    */
+
+    const categories = {
+        products: Array.from({ length: 90 }, (_, i) => i + 1),
         factory: [],
         projects: []
     };
 
-    function getCategory(number) {
-        if (imageCategories.factory.includes(number)) return "factory";
-        if (imageCategories.projects.includes(number)) return "projects";
+    let activeFilter = "all";
+    let visibleImages = [];
+    let currentIndex = 0;
+
+    /* =====================================
+       CREATE GALLERY
+       ===================================== */
+
+    function getCategory(imageNumber) {
+
+        if (categories.factory.includes(imageNumber)) {
+            return "factory";
+        }
+
+        if (categories.projects.includes(imageNumber)) {
+            return "projects";
+        }
+
         return "products";
     }
 
-    function updateCount() {
-        const count = galleryGrid.querySelectorAll(".gallery-card").length;
-        galleryCount.textContent = count + " photos displayed";
+    function getImageNumbers() {
+
+        if (activeFilter === "all") {
+            return Array.from(
+                { length: TOTAL_IMAGES },
+                (_, i) => i + 1
+            );
+        }
+
+        return categories[activeFilter] || [];
     }
 
-    function renderGallery() {
+    function createGallery() {
+
+        const imageNumbers = getImageNumbers();
+
+        visibleImages = imageNumbers;
+
         galleryGrid.innerHTML = "";
 
-        const displayedImages = availableImages.filter(number => {
-            return activeFilter === "all" || getCategory(number) === activeFilter;
-        });
+        imageNumbers.forEach((number, index) => {
 
-        displayedImages.forEach(number => {
             const figure = document.createElement("figure");
             figure.className = "gallery-card";
 
-            const img = document.createElement("img");
-            img.src = `images/${number}.jpeg`;
-            img.alt = `Zinco Mabati photo ${number}`;
-            img.loading = "lazy";
+            const image = document.createElement("img");
+
+            image.src = `images/${number}.jpeg`;
+            image.alt = `Zinco Mabati roofing photo ${number}`;
+
+            // Load the first six images immediately.
+            // Load the remaining images when needed.
+            image.loading = index < 6 ? "eager" : "lazy";
+
+            image.decoding = "async";
+
+            if (index < 2) {
+                image.fetchPriority = "high";
+            }
+
+            image.width = 600;
+            image.height = 400;
+
+            image.onerror = function () {
+                figure.remove();
+                updateGalleryCount();
+            };
 
             const caption = document.createElement("figcaption");
             caption.textContent = `Zinco Mabati - Photo ${number}`;
 
-            figure.appendChild(img);
+            figure.appendChild(image);
             figure.appendChild(caption);
 
-            figure.addEventListener("click", () => openLightbox(number));
+            figure.addEventListener("click", function () {
+                openLightbox(number);
+            });
 
             galleryGrid.appendChild(figure);
         });
 
-        updateCount();
+        updateGalleryCount();
     }
 
-    function openLightbox(number) {
-        currentImage = number;
-        lightboxImage.src = `images/${number}.jpeg`;
-        lightboxCaption.textContent = `Zinco Mabati - Photo ${number}`;
+    /* =====================================
+       UPDATE PHOTO COUNT
+       ===================================== */
+
+    function updateGalleryCount() {
+
+        const loadedCards = galleryGrid.querySelectorAll(
+            ".gallery-card"
+        ).length;
+
+        if (galleryCount) {
+            galleryCount.textContent =
+                `${loadedCards} photos displayed`;
+        }
+    }
+
+    /* =====================================
+       CATEGORY FILTERS
+       ===================================== */
+
+    if (galleryFilters) {
+
+        galleryFilters.addEventListener("click", function (event) {
+
+            const button = event.target.closest(".gallery-filter");
+
+            if (!button) return;
+
+            activeFilter = button.dataset.filter;
+
+            galleryFilters.querySelectorAll(".gallery-filter")
+                .forEach(btn => btn.classList.remove("active"));
+
+            button.classList.add("active");
+
+            createGallery();
+        });
+    }
+
+    /* =====================================
+       LIGHTBOX
+       ===================================== */
+
+    function openLightbox(imageNumber) {
+
+        currentIndex = visibleImages.indexOf(imageNumber);
+
+        if (currentIndex < 0) return;
+
+        showLightboxImage();
+
         lightbox.classList.add("active");
         lightbox.setAttribute("aria-hidden", "false");
+
         document.body.style.overflow = "hidden";
     }
 
+    function showLightboxImage() {
+
+        const imageNumber = visibleImages[currentIndex];
+
+        if (!imageNumber) return;
+
+        lightboxImage.src = `images/${imageNumber}.jpeg`;
+
+        lightboxImage.alt =
+            `Zinco Mabati roofing photo ${imageNumber}`;
+
+        lightboxCaption.textContent =
+            `Photo ${imageNumber} of ${TOTAL_IMAGES}`;
+    }
+
     function closeLightbox() {
+
         lightbox.classList.remove("active");
         lightbox.setAttribute("aria-hidden", "true");
+
         document.body.style.overflow = "";
+
+        lightboxImage.src = "";
     }
 
-    function showImage(direction) {
-        if (!availableImages.length) return;
+    function showNextImage() {
 
-        let index = availableImages.indexOf(currentImage);
-        index = (index + direction + availableImages.length) % availableImages.length;
+        if (!visibleImages.length) return;
 
-        currentImage = availableImages[index];
-        lightboxImage.src = `images/${currentImage}.jpeg`;
-        lightboxCaption.textContent = `Zinco Mabati - Photo ${currentImage}`;
+        currentIndex =
+            (currentIndex + 1) % visibleImages.length;
+
+        showLightboxImage();
     }
 
-    filters.forEach(button => {
-        button.addEventListener("click", () => {
-            filters.forEach(item => item.classList.remove("active"));
-            button.classList.add("active");
-            activeFilter = button.dataset.filter;
-            renderGallery();
-        });
-    });
+    function showPreviousImage() {
 
-    closeButton.addEventListener("click", closeLightbox);
-    prevButton.addEventListener("click", () => showImage(-1));
-    nextButton.addEventListener("click", () => showImage(1));
+        if (!visibleImages.length) return;
 
-    lightbox.addEventListener("click", event => {
-        if (event.target === lightbox) closeLightbox();
-    });
+        currentIndex =
+            (currentIndex - 1 + visibleImages.length) %
+            visibleImages.length;
 
-    document.addEventListener("keydown", event => {
-        if (!lightbox.classList.contains("active")) return;
-
-        if (event.key === "Escape") closeLightbox();
-        if (event.key === "ArrowLeft") showImage(-1);
-        if (event.key === "ArrowRight") showImage(1);
-    });
-
-    // Load all 90 images and display those that exist.
-    let completed = 0;
-
-    for (let i = 1; i <= totalImages; i++) {
-        const image = new Image();
-
-        image.onload = () => {
-            availableImages.push(i);
-            checkCompleted();
-        };
-
-        image.onerror = () => {
-            checkCompleted();
-        };
-
-        image.src = `images/${i}.jpeg`;
+        showLightboxImage();
     }
 
-    function checkCompleted() {
-        completed++;
+    /* =====================================
+       LIGHTBOX BUTTONS
+       ===================================== */
 
-        if (completed === totalImages) {
-            availableImages.sort((a, b) => a - b);
-            renderGallery();
+    if (closeButton) {
+        closeButton.addEventListener("click", closeLightbox);
+    }
 
-            if (!availableImages.length) {
-                galleryCount.textContent = "No images could be loaded.";
+    if (nextButton) {
+        nextButton.addEventListener("click", showNextImage);
+    }
+
+    if (previousButton) {
+        previousButton.addEventListener("click", showPreviousImage);
+    }
+
+    if (lightbox) {
+
+        lightbox.addEventListener("click", function (event) {
+
+            if (event.target === lightbox) {
+                closeLightbox();
             }
-        }
+
+        });
     }
+
+    /* =====================================
+       KEYBOARD CONTROLS
+       ===================================== */
+
+    document.addEventListener("keydown", function (event) {
+
+        if (!lightbox || !lightbox.classList.contains("active")) {
+            return;
+        }
+
+        if (event.key === "Escape") {
+            closeLightbox();
+        }
+
+        if (event.key === "ArrowRight") {
+            showNextImage();
+        }
+
+        if (event.key === "ArrowLeft") {
+            showPreviousImage();
+        }
+
+    });
+
+    /* =====================================
+       INITIALIZE
+       ===================================== */
+
+    createGallery();
+
 });
