@@ -1,0 +1,479 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gallery | Zinco Mabati Rolling Mills Factory</title>
+
+    <meta name="description"
+          content="Explore Zinco Mabati roofing sheets, factory images and roofing projects. Quality roofing solutions at affordable prices.">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* GALLERY PAGE */
+
+        .gallery-page {
+            padding: 60px 5%;
+            background: #f1f3f5;
+            min-height: 70vh;
+        }
+
+        .gallery-heading {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .gallery-heading h1 {
+            color: #082b68;
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .gallery-heading p {
+            color: #68758b;
+            font-size: 16px;
+        }
+
+        .gallery-toolbar {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+            color: #68758b;
+            font-size: 14px;
+        }
+
+        .gallery-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 35px;
+        }
+
+        .gallery-filter {
+            border: 2px solid #082b68;
+            background: white;
+            color: #082b68;
+            padding: 10px 22px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .gallery-filter:hover,
+        .gallery-filter.active {
+            background: #082b68;
+            color: white;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .gallery-card {
+            position: relative;
+            overflow: hidden;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.09);
+            aspect-ratio: 4 / 3;
+            cursor: pointer;
+        }
+
+        .gallery-card img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                transparent,
+                rgba(0,0,0,0.7)
+            );
+            display: flex;
+            align-items: flex-end;
+            padding: 15px;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .gallery-card:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-overlay span {
+            color: white;
+            font-weight: 600;
+        }
+
+        .gallery-empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            color: #68758b;
+        }
+
+        /* LIGHTBOX */
+
+        .gallery-lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            inset: 0;
+            background: rgba(0,0,0,0.94);
+            align-items: center;
+            justify-content: center;
+            padding: 60px 70px;
+        }
+
+        .gallery-lightbox.show {
+            display: flex;
+        }
+
+        .gallery-lightbox img {
+            max-width: 100%;
+            max-height: 82vh;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+
+        .lightbox-close,
+        .lightbox-prev,
+        .lightbox-next {
+            position: absolute;
+            border: none;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            cursor: pointer;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-close {
+            top: 20px;
+            right: 25px;
+            width: 45px;
+            height: 45px;
+            font-size: 30px;
+        }
+
+        .lightbox-prev,
+        .lightbox-next {
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            font-size: 25px;
+        }
+
+        .lightbox-prev {
+            left: 15px;
+        }
+
+        .lightbox-next {
+            right: 15px;
+        }
+
+        .lightbox-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: white;
+        }
+
+        @media (max-width: 900px) {
+            .gallery-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .gallery-page {
+                padding: 40px 4%;
+            }
+
+            .gallery-heading h1 {
+                font-size: 28px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+
+            .gallery-lightbox {
+                padding: 50px 12px;
+            }
+
+            .lightbox-prev {
+                left: 5px;
+            }
+
+            .lightbox-next {
+                right: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="nav-wrap">
+
+            <a href="index.html" class="brand">
+                <span class="brand-mark">Z</span>
+                <span>
+                    <strong>ZINCO MABATI</strong>
+                    <small>ROLLING MILLS FACTORY</small>
+                </span>
+            </a>
+
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="about.html">About Us</a>
+                <a href="products.html">Products</a>
+                <a href="prices.html">Price List</a>
+                <a href="gallery.html" class="active">Gallery</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+
+            <button class="menu-toggle" id="menuToggle"
+                    aria-label="Toggle navigation">
+                ☰
+            </button>
+
+        </div>
+    </header>
+
+    <!-- GALLERY -->
+    <main class="gallery-page">
+
+        <div class="gallery-heading">
+            <h1>Our Gallery</h1>
+            <p>
+                Explore our roofing products, factory and quality mabati solutions.
+            </p>
+        </div>
+
+        <div class="gallery-toolbar">
+            <span id="galleryCount">Loading photos...</span>
+            <span>Click any photo to enlarge</span>
+        </div>
+
+        <div class="gallery-filters" id="galleryFilters">
+            <button class="gallery-filter active" data-filter="all">
+                All Photos
+            </button>
+
+            <button class="gallery-filter" data-filter="products">
+                Products
+            </button>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid">
+            <p class="gallery-empty">Loading gallery...</p>
+        </div>
+
+    </main>
+
+    <!-- LIGHTBOX -->
+    <div class="gallery-lightbox" id="galleryLightbox"
+         aria-hidden="true">
+
+        <button class="lightbox-close" id="lightboxClose"
+                aria-label="Close">&times;</button>
+
+        <button class="lightbox-prev" id="lightboxPrev"
+                aria-label="Previous image">&#10094;</button>
+
+        <img id="lightboxImage" src=""
+             alt="Zinco Mabati gallery photo">
+
+        <button class="lightbox-next" id="lightboxNext"
+                aria-label="Next image">&#10095;</button>
+
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>
+                &copy; <span id="currentYear"></span>
+                Zinco Mabati Rolling Mills Factory.
+                All Rights Reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        const galleryGrid = document.getElementById("galleryGrid");
+        const galleryCount = document.getElementById("galleryCount");
+
+        const lightbox = document.getElementById("galleryLightbox");
+        const lightboxImage = document.getElementById("lightboxImage");
+        const lightboxCaption = document.getElementById("lightboxCaption");
+
+        let currentImages = [];
+        let currentIndex = 0;
+
+        // Generate image list: images/1.jpeg to images/90.jpeg
+        const images = Array.from({ length: 90 }, (_, index) => ({
+            number: index + 1,
+            src: `images/${index + 1}.jpeg`
+        }));
+
+        // Render gallery
+        function displayGallery() {
+            galleryGrid.innerHTML = "";
+            currentImages = images;
+
+            images.forEach((photo, index) => {
+                const card = document.createElement("div");
+                card.className = "gallery-card";
+
+                const img = document.createElement("img");
+                img.src = photo.src;
+                img.alt = `Zinco Mabati roofing photo ${photo.number}`;
+                img.loading = "lazy";
+                img.decoding = "async";
+
+                img.onerror = function () {
+                    card.remove();
+                    updateGalleryCount();
+                };
+
+                const overlay = document.createElement("div");
+                overlay.className = "gallery-overlay";
+
+                const caption = document.createElement("span");
+                caption.textContent = `Gallery Photo ${photo.number}`;
+
+                overlay.appendChild(caption);
+                card.appendChild(img);
+                card.appendChild(overlay);
+
+                card.addEventListener("click", () => {
+                    openLightbox(index);
+                });
+
+                galleryGrid.appendChild(card);
+            });
+
+            updateGalleryCount();
+        }
+
+        function updateGalleryCount() {
+            const visiblePhotos =
+                galleryGrid.querySelectorAll(".gallery-card").length;
+
+            galleryCount.textContent =
+                `${visiblePhotos} photos available`;
+        }
+
+        // Lightbox
+        function openLightbox(index) {
+            currentIndex = index;
+            showLightboxImage();
+
+            lightbox.classList.add("show");
+            lightbox.setAttribute("aria-hidden", "false");
+            document.body.style.overflow = "hidden";
+        }
+
+        function showLightboxImage() {
+            const photo = currentImages[currentIndex];
+
+            lightboxImage.src = photo.src;
+            lightboxCaption.textContent =
+                `Gallery Photo ${photo.number}`;
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove("show");
+            lightbox.setAttribute("aria-hidden", "true");
+            document.body.style.overflow = "";
+            lightboxImage.src = "";
+        }
+
+        function nextImage() {
+            currentIndex =
+                (currentIndex + 1) % currentImages.length;
+
+            showLightboxImage();
+        }
+
+        function previousImage() {
+            currentIndex =
+                (currentIndex - 1 + currentImages.length)
+                % currentImages.length;
+
+            showLightboxImage();
+        }
+
+        document.getElementById("lightboxClose")
+            .addEventListener("click", closeLightbox);
+
+        document.getElementById("lightboxNext")
+            .addEventListener("click", nextImage);
+
+        document.getElementById("lightboxPrev")
+            .addEventListener("click", previousImage);
+
+        lightbox.addEventListener("click", event => {
+            if (event.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener("keydown", event => {
+            if (!lightbox.classList.contains("show")) return;
+
+            if (event.key === "Escape") closeLightbox();
+            if (event.key === "ArrowRight") nextImage();
+            if (event.key === "ArrowLeft") previousImage();
+        });
+
+        // Mobile navigation
+        const menuToggle = document.getElementById("menuToggle");
+        const navLinks = document.getElementById("navLinks");
+
+        menuToggle.addEventListener("click", () => {
+            navLinks.classList.toggle("open");
+        });
+
+        // Footer year
+        document.getElementById("currentYear").textContent =
+            new Date().getFullYear();
+
+        // Start gallery
+        displayGallery();
+    </script>
+
+</body>
+</html>
