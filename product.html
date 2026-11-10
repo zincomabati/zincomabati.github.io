@@ -1,0 +1,619 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Our Products | Zinco Mabati Rolling Mills Factory</title>
+
+    <meta name="description"
+          content="Explore corrugated mabati, box profile, versatile, Roman tile, Euro tile, Zee tile, Orientile and stone-coated roofing products from Zinco Mabati.">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* PRODUCTS PAGE */
+
+        .products-banner {
+            min-height: 320px;
+            background:
+                linear-gradient(rgba(6,29,73,.84), rgba(6,29,73,.84)),
+                url("images/90.jpeg") center/cover no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 50px 20px;
+        }
+
+        .products-banner h1 {
+            font-size: clamp(34px, 5vw, 52px);
+            margin-bottom: 15px;
+        }
+
+        .products-banner p {
+            max-width: 700px;
+            margin: auto;
+            line-height: 1.8;
+            font-size: 17px;
+        }
+
+        .products-section {
+            padding: 70px 5%;
+            background: #f1f3f5;
+        }
+
+        .products-container {
+            max-width: 1250px;
+            margin: auto;
+        }
+
+        .products-heading {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .products-heading h2 {
+            color: #082b68;
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .products-heading p {
+            color: #68758b;
+            line-height: 1.7;
+        }
+
+        .products-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 35px;
+        }
+
+        .product-filter {
+            padding: 10px 20px;
+            background: white;
+            color: #082b68;
+            border: 2px solid #082b68;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: .3s;
+        }
+
+        .product-filter:hover,
+        .product-filter.active {
+            background: #082b68;
+            color: white;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 13px;
+            overflow: hidden;
+            box-shadow: 0 7px 25px rgba(8,43,104,.08);
+            transition: transform .3s, box-shadow .3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 35px rgba(8,43,104,.15);
+        }
+
+        .product-image {
+            height: 240px;
+            overflow: hidden;
+            background: #e6eaf0;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform .4s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.07);
+        }
+
+        .product-info {
+            padding: 23px;
+        }
+
+        .product-info h3 {
+            color: #082b68;
+            font-size: 21px;
+            margin-bottom: 12px;
+        }
+
+        .product-info p {
+            color: #68758b;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            min-height: 80px;
+        }
+
+        .product-enquiry {
+            display: inline-block;
+            background: #d71920;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: .3s;
+        }
+
+        .product-enquiry:hover {
+            background: #b9141a;
+        }
+
+        .product-empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 35px;
+            color: #68758b;
+        }
+
+        .products-note {
+            text-align: center;
+            margin-top: 35px;
+            padding: 20px;
+            background: white;
+            border-left: 5px solid #ffd928;
+            color: #68758b;
+            line-height: 1.8;
+        }
+
+        .products-cta {
+            background: #082b68;
+            color: white;
+            padding: 65px 20px;
+            text-align: center;
+        }
+
+        .products-cta h2 {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .products-cta p {
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .products-cta a {
+            display: inline-block;
+            background: #ffd928;
+            color: #082b68;
+            text-decoration: none;
+            padding: 14px 26px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        @media(max-width: 950px) {
+            .products-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media(max-width: 600px) {
+            .products-section {
+                padding: 45px 4%;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .products-banner {
+                min-height: 250px;
+            }
+
+            .product-image {
+                height: 230px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="nav-wrap">
+
+            <a href="index.html" class="brand">
+                <span class="brand-mark">Z</span>
+                <span>
+                    <strong>ZINCO MABATI</strong>
+                    <small>ROLLING MILLS FACTORY</small>
+                </span>
+            </a>
+
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="about.html">About Us</a>
+                <a href="products.html" class="active">Products</a>
+                <a href="prices.html">Price List</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+
+            <button class="menu-toggle" id="menuToggle"
+                    aria-label="Toggle navigation">
+                ☰
+            </button>
+
+        </div>
+    </header>
+
+    <!-- PAGE BANNER -->
+    <section class="products-banner">
+        <div>
+            <h1>Our Roofing Products</h1>
+
+            <p>
+                Discover a variety of roofing profiles and designs
+                suitable for residential, commercial and construction
+                projects. Quality You Can Trust. Roofing You Can Rely On!
+            </p>
+        </div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section class="products-section">
+
+        <div class="products-container">
+
+            <div class="products-heading">
+                <h2>Explore Our Products</h2>
+
+                <p>
+                    Find the right roofing solution for your building.
+                    Select a category to explore our products.
+                </p>
+            </div>
+
+            <!-- FILTERS -->
+            <div class="products-filters">
+
+                <button class="product-filter active"
+                        data-filter="all">
+                    All Products
+                </button>
+
+                <button class="product-filter"
+                        data-filter="profile">
+                    Profile Sheets
+                </button>
+
+                <button class="product-filter"
+                        data-filter="tiles">
+                    Tile Profiles
+                </button>
+
+                <button class="product-filter"
+                        data-filter="special">
+                    Special Roofing
+                </button>
+
+            </div>
+
+            <!-- PRODUCT GRID -->
+            <div class="products-grid" id="productsGrid">
+
+                <article class="product-card" data-category="profile">
+                    <div class="product-image">
+                        <img src="images/1.jpeg"
+                             alt="Corrugated mabati roofing sheets"
+                             loading="lazy">
+                    </div>
+
+                    <div class="product-info">
+                        <h3>Corrugated / Wavy Mabati</h3>
+
+                        <p>
+                            A traditional roofing profile with a wavy
+                            design, suitable for a variety of building
+                            applications.
+                        </p>
+
+                        <a class="product-enquiry"
+                           href="https://wa.me/254752682855?text=Hello%20Zinco%20Mabati%2C%20I%20am%20interested%20in%20Corrugated%20Mabati.">
+                            Enquire on WhatsApp
+                        </a>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="profile">
+                    <div class="product-image">
+                        <img src="images/2.jpeg"
+                             alt="Box profile roofing sheets"
+                             loading="lazy">
+                    </div>
+
+                    <div class="product-info">
+                        <h3>Box Profile / IT4 / IT5</h3>
+
+                        <p>
+                            Modern angular roofing sheets with a clean
+                            appearance for residential and commercial
+                            buildings.
+                        </p>
+
+                        <a class="product-enquiry"
+                           href="https://wa.me/254752682855?text=Hello%20Zinco%20Mabati%2C%20I%20am%20interested%20in%20Box%20Profile%20Mabati.">
+                            Enquire on WhatsApp
+                        </a>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="profile">
+                    <div class="product-image">
+                        <img src="images/3.jpeg"
+                             alt="Versatile roofing sheets"
+                             loading="lazy">
+                    </div>
+
+                    <div class="product-info">
+                        <h3>Versatile Mabati</h3>
+
+                        <p>
+                            A distinctive roofing profile designed to
+                            provide an attractive finish to modern
+                            construction projects.
+                        </p>
+
+                        <a class="product-enquiry"
+                           href="https://wa.me/254752682855?text=Hello%20Zinco%20Mabati%2C%20I%20am%20interested%20in%20Versatile%20Mabati.">
+                            Enquire on WhatsApp
+                        </a>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="tiles">
+                    <div class="product-image">
+                        <img src="images/4.jpeg"
+                             alt="Roman tile roofing sheets"
+                             loading="lazy">
+                    </div>
+
+                    <div class="product-info">
+                        <h3>Roman Tile</h3>
+
+                        <p>
+                            Tile-inspired roofing sheets that give
+                            buildings a stylish and elegant appearance.
+                        </p>
+
+                        <a class="product-enquiry"
+                           href="https://wa.me/254752682855?text=Hello%20Zinco%20Mabati%2C%20I%20am%20interested%20in%20Roman%20Tile%20Mabati.">
+                            Enquire on WhatsApp
+                        </a>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="tiles">
+                    <div class="product-image">
+                        <img src="images/5.jpeg"
+                             alt="Euro tile roofing sheets"
+                             loading="lazy">
+                    </div>
+
+                    <div class="product-info">
+                        <h3>Euro Tile</h3>
+
+                        <p>
+                            A decorative roofing profile that combines
+                            an attractive tiled appearance with the
+                            practicality of roofing sheets.
+                        </p>
+
+                        <a class="product-enquiry"
+                           href="https://wa.me/254752682855?text=Hello%20Zinco%20Mabati%2C%20I%20am%20interested%20in%20Euro%20Tile.">
+                            Enquire on WhatsApp
+                        </a>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="tiles">
+                    <div class="product-image">
+                        <img src="images/6.jpeg"
+                             alt="Zee tile roofing sheets"
+                             loading="lazy">
+                    </div>
+
+                    <div class="product-info">
+                        <h3>Zee Tile</h3>
+
+                        <p>
+                            An attractive tile-style roofing option
+                            for customers looking for a distinctive
+                            roof design.
+                        </p>
+
+                        <a class="product-enquiry"
+                           href="https://wa.me/254752682855?text=Hello%20Zinco%20Mabati%2C%20I%20am%20interested%20in%20Zee%20Tile.">
+                            Enquire on WhatsApp
+                        </a>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="tiles">
+                    <div class="product-image">
+                        <img src="images/7.jpeg"
+                             alt="Orientile roofing sheets"
+                             loading="lazy">
+                    </div>
+
+                    <div class="product-info">
+                        <h3>Orientile</h3>
+
+                        <p>
+                            A decorative roofing profile suitable
+                            for customers seeking a unique tiled
+                            roof finish.
+                        </p>
+
+                        <a class="product-enquiry"
+                           href="https://wa.me/254752682855?text=Hello%20Zinco%20Mabati%2C%20I%20am%20interested%20in%20Orientile.">
+                            Enquire on WhatsApp
+                        </a>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="special">
+                    <div class="product-image">
+                        <img src="images/8.jpeg"
+                             alt="Stone coated roofing tiles"
+                             loading="lazy">
+                    </div>
+
+                    <div class="product-info">
+                        <h3>Stone-Coated Tiles</h3>
+
+                        <p>
+                            A premium roofing option featuring a
+                            textured stone-coated finish and
+                            distinctive appearance.
+                        </p>
+
+                        <a class="product-enquiry"
+                           href="https://wa.me/254752682855?text=Hello%20Zinco%20Mabati%2C%20I%20am%20interested%20in%20Stone%20Coated%20Tiles.">
+                            Enquire on WhatsApp
+                        </a>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="special">
+                    <div class="product-image">
+                        <img src="images/9.jpeg"
+                             alt="Plain galvanized roofing sheets"
+                             loading="lazy">
+                    </div>
+
+                    <div class="product-info">
+                        <h3>Plain Galvanized Sheets</h3>
+
+                        <p>
+                            Plain galvanized sheets suitable for
+                            various construction, fabrication and
+                            roofing applications.
+                        </p>
+
+                        <a class="product-enquiry"
+                           href="https://wa.me/254752682855?text=Hello%20Zinco%20Mabati%2C%20I%20am%20interested%20in%20Plain%20Galvanized%20Sheets.">
+                            Enquire on WhatsApp
+                        </a>
+                    </div>
+                </article>
+
+            </div>
+
+            <div class="products-note">
+                <strong>Need assistance choosing?</strong>
+                Contact our team for product specifications,
+                available colours, gauges, thicknesses and quotations.
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- CALL TO ACTION -->
+    <section class="products-cta">
+
+        <h2>Find the Perfect Roof for Your Building</h2>
+
+        <p>
+            Contact Zinco Mabati today for product information
+            and quotations.
+        </p>
+
+        <a href="contact.html">Request a Quotation</a>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>
+                &copy; <span id="currentYear"></span>
+                Zinco Mabati Rolling Mills Factory.
+                All Rights Reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Mobile navigation
+        const menuToggle = document.getElementById("menuToggle");
+        const navLinks = document.getElementById("navLinks");
+
+        menuToggle.addEventListener("click", function () {
+            navLinks.classList.toggle("open");
+        });
+
+        // Current year
+        document.getElementById("currentYear").textContent =
+            new Date().getFullYear();
+
+        // Product category filtering
+        const filterButtons =
+            document.querySelectorAll(".product-filter");
+
+        const productCards =
+            document.querySelectorAll(".product-card");
+
+        filterButtons.forEach(button => {
+
+            button.addEventListener("click", function () {
+
+                const selectedCategory =
+                    this.getAttribute("data-filter");
+
+                filterButtons.forEach(btn =>
+                    btn.classList.remove("active")
+                );
+
+                this.classList.add("active");
+
+                productCards.forEach(card => {
+
+                    const category =
+                        card.getAttribute("data-category");
+
+                    if (
+                        selectedCategory === "all" ||
+                        category === selectedCategory
+                    ) {
+                        card.style.display = "";
+                    } else {
+                        card.style.display = "none";
+                    }
+
+                });
+
+            });
+
+        });
+    </script>
+
+</body>
+</html>
